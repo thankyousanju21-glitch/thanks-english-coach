@@ -190,7 +190,7 @@ ${transcriptData}
   app.get("/api/version", (req, res) => {
     res.json({
       latest_version_code: 2,
-      apk_url: "https://drive.google.com/file/d/1hh0CAx2H_t7BzgGjex4zdFe5vTLmaXru/view?usp=sharing"
+      apk_url: "https://drive.google.com/file/d/1nLd8w0WA--eu9UcwhNmFCIGQ3PV3NxUN/view?usp=sharing"
     });
   });
 
