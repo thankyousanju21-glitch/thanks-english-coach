@@ -322,25 +322,9 @@ export default function App() {
          </main>
 
          {/* Bottom Footer Area */}
-         <div className="mt-auto px-4 pb-4 space-y-4 w-full relative z-20">
+         <div className="mt-auto w-full relative z-20">
             {/* Banner Ad Placement */}
             <BannerAd />
-            
-            {/* Attribution Link */}
-            <div className="text-center">
-              <span className="text-gray-500 text-[11px] font-medium tracking-tight hover:text-white transition-colors">
-                Developed By{' '}
-                <a 
-                  href="https://www.linkedin.com/in/thankyousanju/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  Thank You Sanju
-                </a>
-              </span>
-            </div>
-            <div className="h-1.5 w-32 bg-gray-800 rounded-full mx-auto mt-2"></div>
          </div>
 
          {/* Modal Overlays */}
