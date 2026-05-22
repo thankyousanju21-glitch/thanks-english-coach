@@ -187,6 +187,14 @@ ${transcriptData}
     }
   });
 
+  app.get("/api/version", (req, res) => {
+    // Change latest_version_code to 2 (or higher) to force an update popup on all phones!
+    res.json({
+      latest_version_code: 1,
+      apk_url: "https://your-website.com/new-update.apk"
+    });
+  });
+
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });

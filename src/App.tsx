@@ -60,7 +60,7 @@ export default function App() {
     setHasLoaded(true);
 
     // Auto-update check
-    fetch('https://yourdomain.com/version.json')
+    fetch('https://thanks-english-coach.onrender.com/api/version')
       .then(res => res.json())
       .then(data => {
         if (data && data.latest_version_code > currentVersionCode) {
@@ -111,7 +111,7 @@ export default function App() {
       }
       
       setIsGeneratingReport(true);
-      const res = await fetch('http://192.168.1.7:3000/api/generate-report', {
+      const res = await fetch('https://thanks-english-coach.onrender.com/api/generate-report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -73,14 +73,14 @@ export class AudioStreamInterface {
 
       if (settings?.apiKey) params.append("apiKey", settings.apiKey);
 
-      const wsUrl = `ws://192.168.1.7:3000/live?${params.toString()}`;
+      const wsUrl = `wss://thanks-english-coach.onrender.com/live?${params.toString()}`;
       this.ws = new WebSocket(wsUrl);
       
       this.ws.onmessage = this.handleDownstreamAudio.bind(this);
       
       this.ws.onerror = (error) => {
         console.error("WebSocket error:", error);
-        onError("Could not connect to the backend server. Make sure the Node server is running on 192.168.1.7:3000.");
+        onError("Could not connect to the backend server. Check your internet connection.");
         this.stop(onStateChange);
       };
 
