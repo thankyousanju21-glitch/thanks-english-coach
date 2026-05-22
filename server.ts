@@ -189,8 +189,8 @@ ${transcriptData}
 
   app.get("/api/version", (req, res) => {
     res.json({
-      latest_version_code: 2,
-      apk_url: "https://drive.google.com/file/d/1nLd8w0WA--eu9UcwhNmFCIGQ3PV3NxUN/view?usp=sharing"
+      latest_version_code: 3,
+      apk_url: "https://drive.google.com/file/d/1J1s9PbFTXYgvklo1Exe85zxgtUy2kA3w/view?usp=sharing"
     });
   });
 
