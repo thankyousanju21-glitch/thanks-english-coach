@@ -1,0 +1,6 @@
+{
+  "name": "Thanks English Tutor",
+  "description": "A real-time conversational AI audio interface designed for practicing spoken English.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
