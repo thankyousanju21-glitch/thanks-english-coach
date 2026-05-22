@@ -191,7 +191,7 @@ ${transcriptData}
     // Change latest_version_code to 2 (or higher) to force an update popup on all phones!
     res.json({
       latest_version_code: 1,
-      apk_url: "https://your-website.com/new-update.apk"
+      apk_url: "https://drive.google.com/file/d/1hh0CAx2H_t7BzgGjex4zdFe5vTLmaXru/view?usp=sharing"
     });
   });
 
