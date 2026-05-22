@@ -16,11 +16,24 @@ export default function App() {
   const [showAppOpenAd, setShowAppOpenAd] = useState(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let interval: any;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setIsSpeaking(audioInterface.isSpeaking);
+      }, 100);
+    } else {
+      setIsSpeaking(false);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
   
   const [hasUpdate, setHasUpdate] = useState(false);
   const [apkUrl, setApkUrl] = useState("");
-  const currentVersionCode = 1;
+  const currentVersionCode = 3;
   
   const [lastSessionLogs, setLastSessionLogs] = useState<string[]>([]);
   const [report, setReport] = useState<string | null>(null);
@@ -165,7 +178,7 @@ export default function App() {
     <div className="min-h-screen bg-black flex justify-center font-sans selection:bg-[#00E5FF]/30">
       
       {/* Mobile Scaffold / Constraint Wrapper */}
-      <div className="w-full max-w-md bg-gradient-to-br from-[#2563eb] via-[#f97316] to-[#dc2626] min-h-[100dvh] h-full shadow-2xl relative flex flex-col overflow-hidden sm:border-x sm:border-white/10">
+      <div className="w-full max-w-md bg-gradient-to-br from-[#2563eb] via-[#f97316] to-[#dc2626] animate-gradient-shift min-h-[100dvh] h-full shadow-2xl relative flex flex-col overflow-hidden sm:border-x sm:border-white/10">
          
          {/* Update Available Overlay */}
          <AnimatePresence>
@@ -175,7 +188,7 @@ export default function App() {
                animate={{ opacity: 1 }} 
                className="absolute inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6"
              >
-               <div className="bg-[#1e1e1e] border border-white/10 rounded-3xl p-6 w-full max-w-sm flex flex-col items-center text-center shadow-2xl">
+               <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-3xl p-6 w-full max-w-sm flex flex-col items-center text-center shadow-2xl">
                  <div className="w-16 h-16 bg-[#00E5FF]/20 rounded-full flex items-center justify-center mb-4 border border-[#00E5FF]/30">
                    <span className="text-3xl">⬆️</span>
                  </div>
@@ -185,7 +198,7 @@ export default function App() {
                  </p>
                  <button 
                    onClick={() => { if(apkUrl) window.location.href = apkUrl; }}
-                   className="w-full py-4 bg-[#00E5FF] text-black font-bold rounded-2xl shadow-lg hover:bg-cyan-400 transition-colors"
+                   className="w-full py-4 bg-[#00E5FF] text-black font-bold rounded-2xl shadow-lg hover:bg-cyan-400 transition-colors glow-border"
                  >
                    Download Update Now
                  </button>
@@ -230,22 +243,27 @@ export default function App() {
              {/* Dynamic Audio Visualizer */}
              <div className="flex items-center justify-center space-x-1 h-32 w-full">
                {[...Array(40)].map((_, i) => {
-                 // Create a bell curve shape for the default visualizer
                  const centerDist = Math.abs(20 - i);
                  const baseHeight = Math.max(10, 100 - centerDist * 5);
+                 
+                 let animateObj: any = { height: [baseHeight * 0.9, baseHeight * 1.1, baseHeight * 0.9] };
+                 let transObj: any = { duration: 2 + Math.random(), repeat: Infinity, ease: "easeInOut" };
+                 
+                 if (isRecording && !isSpeaking) {
+                    // LISTENING: Fluid ripple wave from left to right
+                    animateObj = { height: [baseHeight * 0.8, baseHeight * 1.5, baseHeight * 0.8] };
+                    transObj = { duration: 1.5, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" };
+                 } else if (isRecording && isSpeaking) {
+                    // SPEAKING: Energetic bouncing with randomness
+                    animateObj = { height: [baseHeight, baseHeight * (1.3 + Math.random() * 0.4), baseHeight * (0.7 + Math.random() * 0.3), baseHeight] };
+                    transObj = { duration: 0.2 + Math.random() * 0.3, repeat: Infinity, ease: "easeInOut" };
+                 }
                  
                  return (
                    <motion.div
                      key={i}
-                     initial={{ height: baseHeight }}
-                     animate={isRecording ? { 
-                       height: [baseHeight, baseHeight * (1.2 + Math.random()), baseHeight * (0.8 + Math.random()), baseHeight]
-                     } : { height: baseHeight }}
-                     transition={isRecording ? { 
-                       duration: 0.5 + Math.random() * 0.5, 
-                       repeat: Infinity, 
-                       ease: "easeInOut" 
-                     } : { duration: 0.3 }}
+                     animate={animateObj}
+                     transition={transObj}
                      className="w-1.5 rounded-full"
                      style={{
                        backgroundColor: `hsl(${i * 8}, 80%, 65%)`,
@@ -273,7 +291,7 @@ export default function App() {
              initial={{ y: 20, opacity: 0 }}
              animate={{ y: 0, opacity: 1 }}
            >
-             <div className="bg-[#2a1b1b]/80 backdrop-blur-xl border border-white/10 rounded-full py-2 pl-6 pr-2 flex items-center justify-between shadow-2xl">
+             <div className={`backdrop-blur-xl rounded-full py-2 pl-6 pr-2 flex items-center justify-between shadow-2xl transition-all ${isRecording ? 'glow-border-pill' : 'bg-black/40 border border-white/5 border-t-white/20'}`}>
                <span className="text-white/60 text-sm font-medium flex-1 truncate pr-4">
                  {isRecording ? "Listening & Speaking..." : "Talk to Coach..."}
                </span>
