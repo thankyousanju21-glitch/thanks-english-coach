@@ -47,6 +47,15 @@ async function startServer() {
 
       const codeSwitchingInstruction = `You are aware that the user's secondary language is ${thinkingLanguage}. Actively monitor the user's incoming streaming text transcripts for code-switching behavior, where they accidentally slide phrases from their native language into an English sentence because they are stuck.\nThe moment you detect a native language phrase slip mid-sentence, gently interrupt them conversationally. Do not scold them. State clearly what word or phrase they used in their native language, provide the natural English professional translation alternative, and instruct them to try repeating that specific sentence again in full English before moving forward.`;
 
+      let modeInstruction = `Start by greeting the student by their name, introducing yourself as ${tutorName} in ${language}, and kick off the conversation based on the ${mode} mode. Do NOT list out or read the historical summaries to the user. Start the conversation natively as a fresh greeting for the day (e.g., 'Hello ${userName}! Ready for today's practice?'). Use the background data silently to guide your vocabulary and grammar feedback loop.`;
+      let initialPrompt = `System Instruction: The user has just connected. You must speak first. Greet the user by their name (${userName}), introduce yourself as ${tutorName}, and start the ${language} language practice in the ${mode} scenario now.`;
+
+      if (mode === "Pronunciation") {
+        modeInstruction = `Start by greeting the student by their name and introducing yourself as ${tutorName}. Explain that today's focus is on Pronunciation. Give the user a short, simple sentence in ${language} and ask them to repeat it back to you out loud. 
+When they reply, evaluate their pronunciation based on the audio you hear. Give them constructive feedback on their pronunciation, then provide a new sentence for them to try. Keep sentences short. Do not ask conversational questions. Only give sentences to pronounce.`;
+        initialPrompt = `System Instruction: The user has just connected. You must speak first. Greet the user by their name (${userName}), introduce yourself as ${tutorName}, and give them their first short ${language} sentence to pronounce.`;
+      }
+
       const ai = new GoogleGenAI({ apiKey });
       const session = await ai.live.connect({
         model: "gemini-3.1-flash-live-preview",
@@ -76,7 +85,7 @@ async function startServer() {
 We are practicing the language: ${language}, in the context mode: ${mode}. The user wants to speak at a ${pace} pace.
 The student you are teaching is named ${userName}${userGender ? ` (Gender: ${userGender})` : ''}.
 
-Start by greeting the student by their name, introducing yourself as ${tutorName} in ${language}, and kick off the conversation based on the ${mode} mode. Do NOT list out or read the historical summaries to the user. Start the conversation natively as a fresh greeting for the day (e.g., 'Hello ${userName}! Ready for today's practice?'). Use the background data silently to guide your vocabulary and grammar feedback loop.
+${modeInstruction}
 
 Here is the 14-day background data of previous chats (for silent guiding only):
 ${historyContext}
@@ -93,10 +102,10 @@ CRITICAL INSTRUCTION: Your core focus is solely on language learning. If the use
 
       // Send auto-start message so the AI begins talking first
       try {
-         session.sendClientContent({ turns: [{ role: "user", parts: [{ text: `System Instruction: The user has just connected. You must speak first. Greet the user by their name (${userName}), introduce yourself as ${tutorName}, and start the ${language} language practice in the ${mode} scenario now.` }] }] });
+         session.sendClientContent({ turns: [{ role: "user", parts: [{ text: initialPrompt }] }] });
       } catch (e) {
          try {
-           session.send(`System Instruction: The user has just connected. You must speak first. Greet the user by their name (${userName}), introduce yourself as ${tutorName}, and start the ${language} language practice in the ${mode} scenario now.`);
+           session.send(initialPrompt);
          } catch(e2) {
            console.warn("Could not send initial prompt", e2);
          }

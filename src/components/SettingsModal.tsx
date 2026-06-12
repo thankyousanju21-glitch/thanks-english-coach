@@ -22,7 +22,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
   const modes = [
     "Conversation", "Daily Life Style", "Interview", "Debate", 
     "Political Debate", "Religious Conversation", "Restaurant", 
-    "Meeting", "Business", "Talk to Boss"
+    "Meeting", "Business", "Talk to Boss", "Pronunciation"
   ];
   const paces = ["Slow", "Normal", "Fast", "Very Fast"];
   const replyLengths = ["Short", "Medium", "Long"];
@@ -71,7 +71,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#2563eb] via-[#f97316] to-[#dc2626] z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="flex justify-between items-center px-6 pt-12 pb-4 bg-[#121212]/30 backdrop-blur-md border-b border-white/10 shrink-0">
+            <div className="flex justify-between items-center px-6 pt-12 pb-4 bg-black/40 backdrop-blur-xl border-b border-white/5 shrink-0">
               <div className="flex items-center space-x-3">
                 <button onClick={onClose} className="p-2 -ml-2 rounded-full text-white/80 hover:text-white transition">
                   <X size={24} className="stroke-[2.5]" />
@@ -87,7 +87,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 thin-scrollbar pb-32">
               
               {/* Profile Card */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
                 <h3 className="text-white font-bold text-[15px] tracking-wide">Profile</h3>
                 
                 <div className="space-y-1">
@@ -138,7 +138,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               </div>
 
               {/* Preferences Card */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
                 <div className="flex items-center space-x-2">
                   <Settings size={18} className="text-[#00E5FF]" />
                   <h3 className="text-white font-bold text-[15px] tracking-wide">Preferences</h3>
@@ -188,7 +188,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               </div>
 
               {/* Language & Scenarios */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
                  <div className="space-y-1">
                   <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Language to Learn</label>
                   <div className="relative">
@@ -225,7 +225,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               </div>
 
               {/* Voice Pace & Reply Length */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
                  <div className="space-y-2">
                   <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Voice Pace</label>
                   <div className="flex bg-[#121212]/50 p-1 rounded-xl border border-white/5">
@@ -266,7 +266,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               </div>
 
               {/* History (14 Days) */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-5 shadow-xl flex flex-col max-h-64">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 shadow-xl flex flex-col max-h-64">
                 <h3 className="text-white font-bold text-[15px] tracking-wide mb-3">Chat History (14 Days)</h3>
                 <div className="overflow-y-auto thin-scrollbar pr-2 space-y-3 flex-1">
                    {cachedChats.length === 0 && (
@@ -285,7 +285,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
               </div>
 
               {/* About */}
-              <div className="bg-[#1e1e1e]/80 backdrop-blur-xl border border-white/10 rounded-[1.5rem] p-2 shadow-xl mb-4">
+              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-2 shadow-xl mb-4">
                 <button 
                   onClick={() => window.open('https://www.linkedin.com/in/thankyousanju/', '_blank')}
                   className="w-full text-left flex items-center justify-between px-4 py-3 text-sm text-gray-400 hover:text-white transition-colors border-b border-white/5"
@@ -322,7 +322,7 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-red-600/50 to-transparent pt-12 pointer-events-none">
               <button 
                 onClick={onClose}
-                className="w-full py-4 bg-[#1a1a1a] text-white font-bold tracking-wide rounded-2xl text-sm shadow-[0_0_40px_rgba(220,38,38,0.4)] border border-white/10 hover:bg-[#222] transition-colors pointer-events-auto"
+                className="w-full py-4 bg-[#1a1a1a] text-white font-bold tracking-wide rounded-2xl text-sm shadow-[0_0_40px_rgba(220,38,38,0.4)] transition-colors pointer-events-auto glow-border"
               >
                 Save Configuration
               </button>
