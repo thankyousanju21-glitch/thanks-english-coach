@@ -7,6 +7,12 @@ export class AudioStreamInterface {
   public isActive: boolean = false;
   
   public sessionLogs: string[] = [];
+  
+  public get isSpeaking(): boolean {
+    if (!this.isActive || !this.audioContext) return false;
+    return this.audioContext.currentTime < this.nextStartTime;
+  }
+  
   private onTranscriptUpdate?: (text: string) => void;
   private recognition: any = null;
 

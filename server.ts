@@ -198,8 +198,8 @@ ${transcriptData}
 
   app.get("/api/version", (req, res) => {
     res.json({
-      latest_version_code: 3,
-      apk_url: "https://drive.google.com/file/d/1LnLFpFzTJVCS5qjMYC3lgOfvlJG-IoTU/view?usp=sharing"
+      latest_version_code: 4,
+      apk_url: "https://drive.google.com/file/d/1kAHMBq4rvJ98wUX_TwMMhzMRluKd1HSS/view?usp=sharing"
     });
   });
 

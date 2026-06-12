@@ -175,33 +175,52 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex justify-center font-sans selection:bg-[#00E5FF]/30">
+    <div className="min-h-screen flex items-center justify-center font-sans p-4">
       
-      {/* Mobile Scaffold / Constraint Wrapper */}
-      <div className="w-full max-w-md bg-gradient-to-br from-[#2563eb] via-[#f97316] to-[#dc2626] animate-gradient-shift min-h-[100dvh] h-full shadow-2xl relative flex flex-col overflow-hidden sm:border-x sm:border-white/10">
+      {/* Windows XP Window Frame */}
+      <div className="xp-window w-full max-w-md h-[90vh] shadow-2xl relative flex flex-col">
          
+         {/* Title bar */}
+         <div className="xp-titlebar">
+            <div className="xp-titlebar-text">
+              <span className="text-[14px]">Thanks English Coach</span>
+            </div>
+            <div className="xp-controls">
+              <button className="xp-control-btn xp-min-btn">_</button>
+              <button className="xp-control-btn xp-max-btn">□</button>
+              <button className="xp-control-btn xp-close-btn" onClick={() => {}}>X</button>
+            </div>
+         </div>
+         
+         <div className="xp-titlebar bg-[#ece9d8] border-b border-white/40 flex items-center p-1" style={{background: '#ece9d8'}}>
+            <span className="text-[11px] px-2 text-black cursor-default hover:bg-[#316ac5] hover:text-white">File</span>
+            <span className="text-[11px] px-2 text-black cursor-default hover:bg-[#316ac5] hover:text-white" onClick={() => setIsSettingsOpen(true)}>Edit Settings</span>
+            <span className="text-[11px] px-2 text-black cursor-default hover:bg-[#316ac5] hover:text-white">View</span>
+            <span className="text-[11px] px-2 text-black cursor-default hover:bg-[#316ac5] hover:text-white">Help</span>
+         </div>
+
          {/* Update Available Overlay */}
          <AnimatePresence>
            {hasUpdate && (
              <motion.div 
                initial={{ opacity: 0 }} 
                animate={{ opacity: 1 }} 
-               className="absolute inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6"
+               className="absolute inset-0 z-[200] flex items-center justify-center bg-black/40 p-6"
              >
-               <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-3xl p-6 w-full max-w-sm flex flex-col items-center text-center shadow-2xl">
-                 <div className="w-16 h-16 bg-[#00E5FF]/20 rounded-full flex items-center justify-center mb-4 border border-[#00E5FF]/30">
-                   <span className="text-3xl">⬆️</span>
+               <div className="xp-window w-full max-w-sm flex flex-col shadow-2xl">
+                 <div className="xp-titlebar">
+                    <div className="xp-titlebar-text">Software Update</div>
+                    <div className="xp-controls"><button className="xp-control-btn xp-close-btn">X</button></div>
                  </div>
-                 <h2 className="text-xl font-bold text-white mb-2">Update Available</h2>
-                 <p className="text-white/60 text-sm mb-6 leading-relaxed">
-                   A new version of Thanks English Tutor is available. Please update to keep practicing with your tutor.
-                 </p>
-                 <button 
-                   onClick={() => { if(apkUrl) window.location.href = apkUrl; }}
-                   className="w-full py-4 bg-[#00E5FF] text-black font-bold rounded-2xl shadow-lg hover:bg-cyan-400 transition-colors glow-border"
-                 >
-                   Download Update Now
-                 </button>
+                 <div className="xp-body" style={{backgroundColor: '#ece9d8'}}>
+                   <div className="flex items-center gap-4 mb-4">
+                     <span className="text-3xl">⚠️</span>
+                     <p className="text-black text-[11px]">A new version of Thanks English Tutor is available. Please update to keep practicing with your tutor.</p>
+                   </div>
+                   <div className="flex justify-end gap-2 mt-2">
+                     <button className="xp-button" onClick={() => { if(apkUrl) window.location.href = apkUrl; }}>Download</button>
+                   </div>
+                 </div>
                </div>
              </motion.div>
            )}
@@ -222,125 +241,100 @@ export default function App() {
             <AppOpenAd onClose={() => setShowAppOpenAd(false)} />
          )}
 
-         {/* Screen Header */}
-         <header className="flex justify-between items-center p-6 mt-[env(safe-area-inset-top)] z-10">
-           <button className="p-2 text-white/90 hover:text-white transition-colors">
-             <Menu size={24} className="stroke-[2.5]" />
-           </button>
-           <h1 className="text-lg font-medium text-white/90 tracking-wide">Thanks English Coach</h1>
-           <button 
-             onClick={() => setIsSettingsOpen(true)}
-             className="p-2 text-white/90 hover:text-white transition-colors"
-           >
-             <Settings size={22} className="stroke-[2.5]" />
-           </button>
-         </header>
-
          {/* Main Interface Area */}
-         <main className="flex-1 flex flex-col items-center justify-center -mt-8 p-8 relative z-0">
-           
-           <div className="relative flex items-center justify-center w-full h-48 mb-8">
-             {/* Dynamic Audio Visualizer */}
-             <div className="flex items-center justify-center space-x-1 h-32 w-full">
-               {[...Array(40)].map((_, i) => {
-                 const centerDist = Math.abs(20 - i);
-                 const baseHeight = Math.max(10, 100 - centerDist * 5);
-                 
-                 let animateObj: any = { height: [baseHeight * 0.9, baseHeight * 1.1, baseHeight * 0.9] };
-                 let transObj: any = { duration: 2 + Math.random(), repeat: Infinity, ease: "easeInOut" };
-                 
-                 if (isRecording && !isSpeaking) {
-                    // LISTENING: Fluid ripple wave from left to right
-                    animateObj = { height: [baseHeight * 0.8, baseHeight * 1.5, baseHeight * 0.8] };
-                    transObj = { duration: 1.5, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" };
-                 } else if (isRecording && isSpeaking) {
-                    // SPEAKING: Energetic bouncing with randomness
-                    animateObj = { height: [baseHeight, baseHeight * (1.3 + Math.random() * 0.4), baseHeight * (0.7 + Math.random() * 0.3), baseHeight] };
-                    transObj = { duration: 0.2 + Math.random() * 0.3, repeat: Infinity, ease: "easeInOut" };
-                 }
-                 
-                 return (
-                   <motion.div
-                     key={i}
-                     animate={animateObj}
-                     transition={transObj}
-                     className="w-1.5 rounded-full"
-                     style={{
-                       backgroundColor: `hsl(${i * 8}, 80%, 65%)`,
-                       opacity: 0.8 + (Math.random() * 0.2)
-                     }}
-                   />
-                 );
-               })}
-             </div>
-           </div>
-
-           {/* Permission Errror Handling */}
-           {error && (
-             <motion.div 
-               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-               className="mb-8 px-5 py-3 bg-red-500/20 backdrop-blur-md border border-red-500/30 text-white text-sm font-medium rounded-2xl max-w-xs text-center"
-             >
-               {error}
-             </motion.div>
-           )}
-
-           {/* Bottom Action Pill */}
-           <motion.div 
-             className="absolute bottom-10 w-full max-w-[85%] mx-auto left-0 right-0"
-             initial={{ y: 20, opacity: 0 }}
-             animate={{ y: 0, opacity: 1 }}
-           >
-             <div className={`backdrop-blur-xl rounded-full py-2 pl-6 pr-2 flex items-center justify-between shadow-2xl transition-all ${isRecording ? 'glow-border-pill' : 'bg-black/40 border border-white/5 border-t-white/20'}`}>
-               <span className="text-white/60 text-sm font-medium flex-1 truncate pr-4">
-                 {isRecording ? "Listening & Speaking..." : "Talk to Coach..."}
-               </span>
+         <div className="xp-body relative z-0 flex-col">
+            <div className="xp-inner-container flex flex-col items-center justify-center relative">
                
-               <div className="flex items-center space-x-2">
-                 <button 
-                   onClick={toggleRecording}
-                   className={`w-12 h-12 flex items-center justify-center rounded-full transition-all duration-300 ${
-                     isRecording ? "bg-red-500/20 text-red-400" : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
-                   }`}
-                 >
-                   {isRecording ? <Square size={20} fill="currentColor" /> : <Mic size={20} />}
-                 </button>
-                 
-                 <button 
-                   disabled={isGeneratingReport || dailyLimitReached || isRecording}
-                   onClick={() => {
-                     if (dailyLimitReached) {
-                       setError("Daily limit reached. Come back tomorrow!");
-                     } else {
-                       handleGenerateReport();
+               <h2 className="text-lg font-bold text-black mb-8" style={{fontFamily: "Comic Sans MS, Tahoma, sans-serif"}}>Speak with your Coach!</h2>
+
+               <div className="relative flex items-center justify-center w-full h-32 mb-8 border border-gray-300 p-2" style={{background: '#ffffff'}}>
+                 {/* Retro Audio Visualizer */}
+                 <div className="flex items-center justify-center space-x-1 h-24 w-full bg-black p-2 border-inset">
+                   {[...Array(40)].map((_, i) => {
+                     const centerDist = Math.abs(20 - i);
+                     const baseHeight = Math.max(10, 100 - centerDist * 5);
+                     
+                     let animateObj: any = { height: [baseHeight * 0.9, baseHeight * 1.1, baseHeight * 0.9] };
+                     let transObj: any = { duration: 2 + Math.random(), repeat: Infinity, ease: "easeInOut" };
+                     
+                     if (isRecording && !isSpeaking) {
+                        animateObj = { height: [baseHeight * 0.8, baseHeight * 1.5, baseHeight * 0.8] };
+                        transObj = { duration: 1.5, repeat: Infinity, delay: i * 0.04, ease: "easeInOut" };
+                     } else if (isRecording && isSpeaking) {
+                        animateObj = { height: [baseHeight, baseHeight * (1.3 + Math.random() * 0.4), baseHeight * (0.7 + Math.random() * 0.3), baseHeight] };
+                        transObj = { duration: 0.2 + Math.random() * 0.3, repeat: Infinity, ease: "easeInOut" };
                      }
-                   }}
-                   className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 text-white/80 hover:bg-white/20 hover:text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                 >
-                   {isGeneratingReport ? (
-                     <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: "linear" }} className="w-5 h-5 border-2 border-white/80 border-t-transparent rounded-full" />
-                   ) : (
-                     <Download size={20} />
-                   )}
-                 </button>
+                     
+                     return (
+                       <motion.div
+                         key={i}
+                         animate={animateObj}
+                         transition={transObj}
+                         className="w-1.5"
+                         style={{
+                           backgroundColor: isRecording ? '#00ff00' : '#006600',
+                           boxShadow: isRecording ? '0 0 5px #00ff00' : 'none'
+                         }}
+                       />
+                     );
+                   })}
+                 </div>
                </div>
-             </div>
-           </motion.div>
-           
-           {dailyLimitReached && !isRecording && (
-              <div className="absolute bottom-2 text-[10px] text-white/40 uppercase tracking-widest text-center w-full">
-                 Daily Limit Reached ({reportsUsed}/5)
-              </div>
-           )}
-           {!dailyLimitReached && reportsUsed > 0 && !isRecording && (
-              <div className="absolute bottom-2 text-[10px] text-white/40 uppercase tracking-widest text-center w-full">
-                 {reportsUsed} of 5 notes used today
-              </div>
-           )}
-         </main>
+
+               {/* Permission Errror Handling */}
+               {error && (
+                 <div className="mb-4 px-4 py-2 bg-[#ffcccc] border border-[#ff0000] text-[#cc0000] text-[11px] w-full text-center">
+                   {error}
+                 </div>
+               )}
+
+               {/* Bottom Action Pill */}
+               <div className="w-full flex flex-col items-center gap-4 mt-auto">
+                 <div className="text-[11px] text-gray-700">
+                   Status: {isRecording ? "Listening & Speaking..." : "Idle..."}
+                 </div>
+                 
+                 <div className="flex items-center space-x-4">
+                   <button 
+                     onClick={toggleRecording}
+                     className="xp-button font-bold px-6 py-2"
+                   >
+                     {isRecording ? <><Square size={14} fill="currentColor" className="mr-1 text-red-600"/> Stop</> : <><Mic size={14} className="mr-1 text-blue-800"/> Start Talking</>}
+                   </button>
+                   
+                   <button 
+                     disabled={isGeneratingReport || dailyLimitReached || isRecording}
+                     onClick={() => {
+                       if (dailyLimitReached) {
+                         setError("Daily limit reached. Come back tomorrow!");
+                       } else {
+                         handleGenerateReport();
+                       }
+                     }}
+                     className="xp-button px-4 py-2"
+                   >
+                     {isGeneratingReport ? "Generating..." : <><Download size={14} className="mr-1"/> Save Report</>}
+                   </button>
+                 </div>
+               </div>
+               
+               <div className="mt-4 text-center">
+                 {dailyLimitReached && !isRecording && (
+                    <div className="text-[10px] text-gray-500">
+                       Daily Limit Reached ({reportsUsed}/5)
+                    </div>
+                 )}
+                 {!dailyLimitReached && reportsUsed > 0 && !isRecording && (
+                    <div className="text-[10px] text-gray-500">
+                       {reportsUsed} of 5 notes used today
+                    </div>
+                 )}
+               </div>
+            </div>
+         </div>
 
          {/* Bottom Footer Area */}
-         <div className="mt-auto w-full relative z-20">
+         <div className="w-full bg-[#ece9d8] border-t border-[#848284]">
             {/* Banner Ad Placement */}
             <BannerAd />
          </div>

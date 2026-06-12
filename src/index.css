@@ -17,10 +17,164 @@
   background: transparent;
 }
 .thin-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
 .thin-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Classic XP Colors */
+:root {
+  --xp-blue: #0053e1;
+  --xp-blue-light: #3a93ff;
+  --xp-blue-dark: #003399;
+  --xp-bg: #ece9d8;
+  --xp-border: #00138c;
+  --xp-text: #000000;
+  --xp-button-face: #ece9d8;
+}
+
+body {
+  font-family: Tahoma, "Microsoft Sans Serif", sans-serif;
+  background-color: #004e98;
+  background-image: url('https://upload.wikimedia.org/wikipedia/en/2/27/Bliss_%28Windows_XP%29.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.xp-window {
+  background-color: var(--xp-bg);
+  border: 3px solid var(--xp-blue);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.xp-titlebar {
+  background: linear-gradient(to bottom, #0058e6 0%, #3a93ff 8%, #288eff 40%, #127dff 88%, #0366e8 100%);
+  padding: 3px 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.xp-titlebar-text {
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  text-shadow: 1px 1px #0f1089;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.xp-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.xp-control-btn {
+  width: 21px;
+  height: 21px;
+  border: 1px solid white;
+  border-radius: 3px;
+  box-shadow: inset -1px -1px 2px rgba(0,0,0,0.4), inset 1px 1px 2px rgba(255,255,255,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 10px;
+  color: white;
+  cursor: default;
+}
+
+.xp-close-btn {
+  background: linear-gradient(to bottom, #e47565, #d2412e 45%, #c5301e 50%, #d83b27);
+  border-color: white;
+}
+.xp-close-btn:active {
+  background: linear-gradient(to bottom, #d2412e, #a82010);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.xp-min-btn, .xp-max-btn {
+  background: linear-gradient(to bottom, #609df8, #2a72eb 45%, #185ee0 50%, #2f79f2);
+}
+.xp-min-btn:active, .xp-max-btn:active {
+  background: linear-gradient(to bottom, #2a72eb, #0b47b8);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.6);
+}
+
+.xp-body {
+  padding: 8px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.xp-inner-container {
+  background-color: white;
+  border: 1px solid #7f9db9;
+  padding: 8px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.xp-button {
+  background: var(--xp-button-face);
+  border: 1px solid #ffffff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+  color: var(--xp-text);
+  padding: 4px 10px;
+  font-size: 11px;
+  cursor: default;
+  outline: 1px solid #000;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.xp-button:active {
+  border: 1px solid #404040;
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+  padding: 5px 9px 3px 11px;
+}
+.xp-button:disabled {
+  color: #808080;
+  text-shadow: 1px 1px #ffffff;
+}
+
+.xp-fieldset {
+  border: 1px solid #dcdcdc;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+.xp-legend {
+  color: #003399;
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+/* Global Spring Physics for Buttons & Toggles disabled for XP mode */
+button, label.cursor-pointer {
+  /* Prevent default mobile tap highlight so it feels like a native app */
+  -webkit-tap-highlight-color: transparent;
 }

@@ -34,125 +34,133 @@ export function OnboardingModal({ isOpen, onComplete }: { isOpen: boolean; onCom
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           exit={{ opacity: 0 }}
-          className="absolute inset-0 z-[100] flex flex-col bg-[#121212] items-center justify-center p-6 border-transparent overflow-y-auto"
+          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
         >
-          <div className="w-full max-w-sm flex flex-col items-center py-10 my-auto">
-             
-             {step === 1 ? (
-               <>
-                 <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mb-6 border border-blue-500/30">
-                   <span className="text-3xl">👋</span>
-                 </div>
-                 <h2 className="text-2xl font-bold text-white mb-2 text-center">Welcome to Thanks Tutor</h2>
-                 <p className="text-white/50 text-sm mb-10 text-center">Let's personalize your speech training journey.</p>
-                 
-                 <div className="w-full space-y-6">
-                    <div className="space-y-2 text-left">
-                      <label className="text-[11px] text-gray-500 uppercase font-bold tracking-widest pl-1">What's your First Name?</label>
+          <div className="xp-window w-full max-w-sm flex flex-col shadow-2xl">
+            <div className="xp-titlebar">
+              <div className="xp-titlebar-text">Setup Wizard</div>
+              <div className="xp-controls">
+                <button className="xp-control-btn xp-close-btn" disabled>X</button>
+              </div>
+            </div>
+            
+            <div className="xp-body bg-[#ece9d8]">
+              <div className="flex bg-white p-4 border-b border-[#7f9db9] mb-4 gap-4 items-center">
+                <div className="w-12 h-12 bg-[#0058e6] text-white flex justify-center items-center font-bold text-2xl border-2 border-white shadow-sm">
+                  ?
+                </div>
+                <div>
+                  <h2 className="font-bold text-[14px]">Welcome to Thanks Tutor Setup</h2>
+                  <p className="text-[11px] mt-1">This wizard will guide you through the setup process.</p>
+                </div>
+              </div>
+
+              <div className="xp-inner-container flex flex-col gap-3 min-h-[220px]">
+                {step === 1 ? (
+                  <>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold">First Name:</label>
                       <input 
                         type="text"
                         value={name}
                         onChange={e => setName(e.target.value)}
-                        className="w-full bg-[#1e1e1e] border border-white/10 rounded-2xl px-4 py-4 text-white text-sm outline-none focus:border-[#00E5FF] transition-colors"
-                        placeholder="e.g. Suraj"
+                        className="border border-[#7f9db9] px-2 py-1 text-[11px]"
                       />
                     </div>
       
-                    <div className="space-y-2 text-left">
-                      <label className="text-[11px] text-gray-500 uppercase font-bold tracking-widest pl-1">Gender</label>
-                      <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1 mt-2">
+                      <label className="text-[11px] font-bold">Gender:</label>
+                      <div className="flex flex-col gap-1">
                         {(['Male', 'Female', 'Prefer not to say'] as const).map(g => (
-                          <button
-                            key={g}
-                            onClick={() => setGender(g)}
-                            className={`px-4 py-3.5 rounded-2xl border text-xs font-semibold transition active:scale-95 ${g === 'Prefer not to say' ? 'col-span-2' : ''} ${
-                              gender === g 
-                                ? 'bg-[#00E5FF]/10 border-[#00E5FF]/50 text-[#00E5FF]' 
-                                : 'bg-[#121212] border-white/5 text-white/60 hover:bg-white/5'
-                            }`}
-                          >
+                          <label key={g} className="flex items-center gap-1 text-[11px]">
+                            <input 
+                              type="radio" 
+                              name="gender_setup"
+                              checked={gender === g}
+                              onChange={() => setGender(g)}
+                            />
                             {g}
-                          </button>
+                          </label>
                         ))}
                       </div>
                     </div>
 
-                    <div className="space-y-2 text-left">
-                      <label className="text-[11px] text-gray-500 uppercase font-bold tracking-widest pl-1">What language do you usually think or speak in at home?</label>
+                    <div className="flex flex-col gap-1 mt-2">
+                      <label className="text-[11px] font-bold">Primary Language:</label>
                       <select 
                         value={thinkingLanguage}
                         onChange={e => setThinkingLanguage(e.target.value)}
-                        className="w-full bg-[#1e1e1e] border border-white/10 rounded-2xl px-4 py-4 text-white text-sm outline-none focus:border-[#00E5FF] transition-colors appearance-none"
+                        className="border border-[#7f9db9] px-2 py-1 text-[11px] bg-white"
                       >
                         {languages.map(lang => (
                           <option key={lang} value={lang}>{lang}</option>
                         ))}
                       </select>
                     </div>
-      
-                    <button 
-                      disabled={!name.trim() || !gender || !thinkingLanguage}
-                      onClick={() => setStep(2)}
-                      className="w-full mt-8 py-4 bg-white text-black font-bold rounded-2xl text-sm shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
-                    >
-                      Next Step
-                    </button>
-                 </div>
-               </>
-             ) : (
-               <>
-                 <div className="w-16 h-16 bg-[#00E5FF]/20 rounded-full flex items-center justify-center mb-6 border border-[#00E5FF]/30">
-                   <span className="text-3xl">🔑</span>
-                 </div>
-                 <h2 className="text-2xl font-bold text-white mb-2 text-center">Let's unlock your free Tutor!</h2>
-                 
-                 <div className="w-full space-y-6 mt-6">
-                    <div className="bg-[#1e1e1e] border border-white/10 p-5 rounded-2xl shadow-xl space-y-4">
-                      <p className="text-white/80 text-sm leading-relaxed">
-                        To keep this app 100% free forever with no monthly fees, we need to plug in a free key from Google. It takes just 10 seconds:
-                      </p>
-                      
-                      <ul className="text-white/70 text-sm space-y-3 pl-1">
-                        <li>• <strong className="text-white">Step 1:</strong> Click the big blue button below. (It will open Google Chrome).</li>
-                        <li>• <strong className="text-white">Step 2:</strong> Log in with your standard Google account (your normal Gmail).</li>
-                        <li>• <strong className="text-white">Step 3:</strong> Click the blue button that says 'Create API Key', then click 'Copy'.</li>
-                        <li>• <strong className="text-white">Step 4:</strong> Come back to this app, paste that code into the box, and you are ready to talk!</li>
-                      </ul>
-                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-[11px] mb-2 font-bold">Google API Key Required</p>
+                    <p className="text-[11px] mb-2">
+                      To keep this software free, you must provide your own API key.
+                    </p>
+                    <ol className="text-[11px] list-decimal pl-4 mb-4 space-y-1">
+                      <li>Click the button below to open Google Chrome.</li>
+                      <li>Log in with your Google account.</li>
+                      <li>Click 'Create API Key', then 'Copy'.</li>
+                      <li>Paste the key into the box below.</li>
+                    </ol>
 
-                    <div className="space-y-2">
+                    <div className="flex justify-center mb-4">
                       <button 
                         onClick={launchGoogleChromeIntent}
-                        className="w-full py-4 bg-blue-600 text-white font-bold rounded-2xl text-sm shadow-xl hover:bg-blue-500 transition-colors"
+                        className="xp-button px-4 py-1"
                       >
-                        Get Your Free Google Key
+                        Get Free Google Key...
                       </button>
-                      <p className="text-[10px] text-gray-500 leading-tight text-center px-2">
-                        यह लिंक सीधे आपके गूगल क्रोम में खुलेगा ताकि आप आसानी से लॉग-इन कर सकें / This link opens directly in Google Chrome for an instant, seamless login.
-                      </p>
                     </div>
 
-                    <div className="space-y-2 pt-4">
-                      <label className="text-[11px] text-gray-500 uppercase font-bold tracking-widest pl-1">Paste your key here</label>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] font-bold">API Key:</label>
                       <input 
                         type="password"
                         value={apiKey}
                         onChange={e => setApiKey(e.target.value)}
-                        className="w-full bg-[#1e1e1e] border border-white/10 rounded-2xl px-4 py-4 text-white text-sm outline-none focus:border-[#00E5FF] transition-colors"
-                        placeholder="AIzaSy..."
+                        className="border border-[#7f9db9] px-2 py-1 text-[11px]"
                       />
                     </div>
-      
+                  </>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-2 mt-4 pt-3 border-t border-gray-400" style={{background: '#ece9d8'}}>
+                {step === 1 ? (
+                  <>
+                    <button className="xp-button w-20" disabled>&lt; Back</button>
                     <button 
-                      disabled={!apiKey.trim()}
-                      onClick={() => onComplete(name.trim(), gender, thinkingLanguage, apiKey.trim())}
-                      className="w-full mt-4 py-4 bg-white text-black font-bold rounded-2xl text-sm shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+                      className="xp-button w-20 font-bold" 
+                      onClick={() => setStep(2)}
+                      disabled={!name.trim() || !gender || !thinkingLanguage}
                     >
-                      Start Practicing
+                      Next &gt;
                     </button>
-                 </div>
-               </>
-             )}
+                  </>
+                ) : (
+                  <>
+                    <button className="xp-button w-20" onClick={() => setStep(1)}>&lt; Back</button>
+                    <button 
+                      className="xp-button w-20 font-bold" 
+                      onClick={() => onComplete(name.trim(), gender, thinkingLanguage, apiKey.trim())}
+                      disabled={!apiKey.trim()}
+                    >
+                      Finish
+                    </button>
+                  </>
+                )}
+                <button className="xp-button w-20 ml-2" disabled>Cancel</button>
+              </div>
+
+            </div>
           </div>
         </motion.div>
       )}

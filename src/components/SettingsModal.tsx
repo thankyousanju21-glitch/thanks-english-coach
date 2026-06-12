@@ -63,272 +63,149 @@ export function SettingsModal({ isOpen, onClose }: { isOpen: boolean; onClose: (
   return (
     <AnimatePresence>
       {isOpen && (
-        <>
-          {/* Full-screen Overlay with Gradient */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#2563eb] via-[#f97316] to-[#dc2626] z-50 flex flex-col overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex justify-between items-center px-6 pt-12 pb-4 bg-black/40 backdrop-blur-xl border-b border-white/5 shrink-0">
-              <div className="flex items-center space-x-3">
-                <button onClick={onClose} className="p-2 -ml-2 rounded-full text-white/80 hover:text-white transition">
-                  <X size={24} className="stroke-[2.5]" />
-                </button>
-                <h2 className="text-white font-medium text-lg tracking-wide">English Coach Settings</h2>
-              </div>
-              <div className="p-2">
-                 <Settings size={22} className="stroke-[2.5] text-white/80" />
-              </div>
-            </div>
-
-            {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4 thin-scrollbar pb-32">
-              
-              {/* Profile Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
-                <h3 className="text-white font-bold text-[15px] tracking-wide">Profile</h3>
-                
-                <div className="space-y-1">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Your Name</label>
-                  <input 
-                    type="text" 
-                    value={settings.userName || ''} 
-                    onChange={e => saveSettings({...settings, userName: e.target.value})}
-                    className="w-full bg-[#121212]/50 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition-colors"
-                    placeholder="Enter your name"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Native Language</label>
-                  <div className="relative">
-                    <select 
-                      value={settings.thinkingLanguage || 'Hindi'}
-                      onChange={e => {
-                        saveSettings({...settings, thinkingLanguage: e.target.value});
-                        localStorage.setItem('thinking_language', e.target.value);
-                      }}
-                      className="w-full bg-[#121212]/50 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition-colors appearance-none"
-                    >
-                      {thinkingLanguages.map(lang => (
-                        <option key={lang} value={lang} className="bg-[#1e1e1e]">{lang}</option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">&#9662;</div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  {['Male', 'Female'].map(g => (
-                    <button
-                      key={g}
-                      onClick={() => handleGenderChange(g as 'Male'|'Female')}
-                      className={`py-3 rounded-xl text-sm font-bold border transition-colors ${
-                        settings.gender === g 
-                          ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20' 
-                          : 'bg-[#121212]/50 text-gray-400 border-white/5 hover:bg-white/5'
-                      }`}
-                    >
-                      {g}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Preferences Card */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
-                <div className="flex items-center space-x-2">
-                  <Settings size={18} className="text-[#00E5FF]" />
-                  <h3 className="text-white font-bold text-[15px] tracking-wide">Preferences</h3>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Custom Gemini API Key (Optional)</label>
-                  <div className="relative">
-                    <input 
-                      type="password"
-                      placeholder="AIza..."
-                      value={settings.apiKey || ''}
-                      onChange={e => saveSettings({...settings, apiKey: e.target.value})}
-                      className="w-full bg-[#121212]/50 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition-colors pr-10"
-                    />
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"><Settings size={16} /></div>
-                  </div>
-                  <p className="text-[10px] text-gray-500 pl-1 pt-1">Leave blank to use the default app quota.</p>
-                </div>
-
-                <div className="space-y-4 pt-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-white/90">Grammar Correction</span>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only peer"
-                        checked={settings.grammarCorrection ?? true}
-                        onChange={e => saveSettings({...settings, grammarCorrection: e.target.checked})}
-                      />
-                      <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-white/90">Filler-Word Buzzer</span>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        className="sr-only peer"
-                        checked={settings.buzzerEnabled ?? false}
-                        onChange={e => saveSettings({...settings, buzzerEnabled: e.target.checked})}
-                      />
-                      <div className="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Language & Scenarios */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-4 shadow-xl">
-                 <div className="space-y-1">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Language to Learn</label>
-                  <div className="relative">
-                    <select 
-                      value={settings.language || 'English'}
-                      onChange={e => saveSettings({...settings, language: e.target.value})}
-                      className="w-full bg-[#121212]/50 border border-white/5 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-blue-500 transition-colors appearance-none"
-                    >
-                      {languages.map(l => (
-                        <option key={l} value={l} disabled={l !== "English" && l !== "Hindi"} className="bg-[#1e1e1e]">
-                          {l} {l !== "English" && l !== "Hindi" ? '🔒' : ''}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">&#9662;</div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 pt-2">
-                  {modes.map(m => (
-                    <button
-                      key={m}
-                      onClick={() => saveSettings({...settings, mode: m})}
-                      className={`py-2.5 px-2 rounded-xl text-xs font-medium border transition-colors ${
-                        settings.mode === m 
-                          ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20' 
-                          : 'bg-[#121212]/50 text-gray-400 border-white/5 hover:bg-white/10 hover:text-white'
-                      }`}
-                    >
-                      {m}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Voice Pace & Reply Length */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 space-y-5 shadow-xl">
-                 <div className="space-y-2">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Voice Pace</label>
-                  <div className="flex bg-[#121212]/50 p-1 rounded-xl border border-white/5">
-                    {paces.map(p => (
-                      <button
-                        key={p}
-                        onClick={() => saveSettings({...settings, pace: p})}
-                        className={`flex-1 py-2 text-[11px] font-medium transition-colors ${
-                          settings.pace === p 
-                            ? 'bg-white/10 text-white rounded-lg shadow-sm' 
-                            : 'text-gray-400 hover:text-white'
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <label className="text-[11px] text-gray-400 uppercase tracking-widest pl-1">Tutor Reply Length</label>
-                  <div className="flex bg-[#121212]/50 p-1 rounded-xl border border-white/5">
-                    {replyLengths.map(p => (
-                      <button
-                        key={p}
-                        onClick={() => saveSettings({...settings, replyLength: p as any})}
-                        className={`flex-1 py-2 text-[11px] font-medium transition-colors ${
-                          settings.replyLength === p 
-                            ? 'bg-white/10 text-white rounded-lg shadow-sm' 
-                            : 'text-gray-400 hover:text-white'
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* History (14 Days) */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-5 shadow-xl flex flex-col max-h-64">
-                <h3 className="text-white font-bold text-[15px] tracking-wide mb-3">Chat History (14 Days)</h3>
-                <div className="overflow-y-auto thin-scrollbar pr-2 space-y-3 flex-1">
-                   {cachedChats.length === 0 && (
-                     <div className="text-center py-4 text-white/40 text-sm">No chats found.</div>
-                   )}
-                   {cachedChats.map((c, i) => (
-                     <div key={i} className="bg-[#121212]/50 border border-white/5 p-3 rounded-xl flex flex-col space-y-1.5">
-                        <div className="flex justify-between items-start">
-                          <h4 className="text-white text-sm font-medium">{c.title}</h4>
-                          <span className="text-[10px] text-gray-500 font-mono shrink-0 ml-2">{c.date}</span>
-                        </div>
-                        <p className="text-[11px] text-gray-400 leading-relaxed line-clamp-2">{c.summary}</p>
-                     </div>
-                   ))}
-                </div>
-              </div>
-
-              {/* About */}
-              <div className="bg-black/40 backdrop-blur-xl border border-white/5 border-t-white/20 rounded-[1.5rem] p-2 shadow-xl mb-4">
-                <button 
-                  onClick={() => window.open('https://www.linkedin.com/in/thankyousanju/', '_blank')}
-                  className="w-full text-left flex items-center justify-between px-4 py-3 text-sm text-gray-400 hover:text-white transition-colors border-b border-white/5"
-                >
-                  <span className="font-medium text-white/90">Developed By Thank You Sanju</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                </button>
-                <button 
-                  onClick={async () => {
-                    try {
-                      const res = await fetch('/version.json');
-                      const data = await res.json();
-                      if (data.version && data.version !== "v1.0.0") alert("Update available: " + data.version);
-                      else alert("You are on the latest version.");
-                    } catch (e) { alert("Unable to check for updates at this time."); }
-                  }}
-                  className="w-full text-left px-4 py-3 text-sm text-gray-400 hover:text-white transition-colors border-b border-white/5"
-                >
-                  Check for Update
-                </button>
-                <button 
-                  onClick={() => window.open('https://thankyousanju.com/privacy', '_blank')}
-                  className="w-full text-left px-4 py-3 text-sm text-gray-400 hover:text-white transition-colors border-b border-white/5"
-                >
-                  Privacy Policy
-                </button>
-                <div className="w-full px-4 pt-3 pb-2 text-[10px] text-gray-500 tracking-widest uppercase text-center">
-                  App Version: v1.0.0
-                </div>
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/50 p-4"
+        >
+          <div className="xp-window w-full max-w-sm flex flex-col shadow-2xl">
+            <div className="xp-titlebar">
+              <div className="xp-titlebar-text">Properties</div>
+              <div className="xp-controls">
+                <button className="xp-control-btn xp-close-btn" onClick={onClose}>X</button>
               </div>
             </div>
             
-            {/* Save Button (Absolute anchored to bottom) */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-red-600/50 to-transparent pt-12 pointer-events-none">
-              <button 
-                onClick={onClose}
-                className="w-full py-4 bg-[#1a1a1a] text-white font-bold tracking-wide rounded-2xl text-sm shadow-[0_0_40px_rgba(220,38,38,0.4)] transition-colors pointer-events-auto glow-border"
-              >
-                Save Configuration
-              </button>
+            <div className="xp-body" style={{backgroundColor: '#ece9d8'}}>
+              
+              <div className="flex border-b border-gray-400 mb-2">
+                <button onClick={() => setActiveTab('profile')} className={`px-3 py-1 border border-b-0 border-gray-400 rounded-t-sm text-[11px] ${activeTab === 'profile' ? 'bg-white border-b-white z-10 -mb-[1px]' : 'bg-[#ece9d8] mt-[2px]'}`}>Profile</button>
+                <button onClick={() => setActiveTab('preferences')} className={`px-3 py-1 border border-b-0 border-gray-400 rounded-t-sm text-[11px] ${activeTab === 'preferences' ? 'bg-white border-b-white z-10 -mb-[1px]' : 'bg-[#ece9d8] mt-[2px]'}`}>Preferences</button>
+                <button onClick={() => setActiveTab('chats')} className={`px-3 py-1 border border-b-0 border-gray-400 rounded-t-sm text-[11px] ${activeTab === 'chats' ? 'bg-white border-b-white z-10 -mb-[1px]' : 'bg-[#ece9d8] mt-[2px]'}`}>History</button>
+              </div>
+
+              <div className="xp-inner-container flex flex-col gap-2 h-64">
+                
+                {activeTab === 'profile' && (
+                  <>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11px] text-black">Your Name:</label>
+                      <input 
+                        type="text" 
+                        value={settings.userName || ''} 
+                        onChange={e => saveSettings({...settings, userName: e.target.value})}
+                        className="border border-[#7f9db9] px-2 py-1 text-[11px]"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1 mt-2">
+                      <label className="text-[11px] text-black">Native Language:</label>
+                      <select 
+                        value={settings.thinkingLanguage || 'Hindi'}
+                        onChange={e => {
+                          saveSettings({...settings, thinkingLanguage: e.target.value});
+                          localStorage.setItem('thinking_language', e.target.value);
+                        }}
+                        className="border border-[#7f9db9] px-2 py-1 text-[11px] bg-white"
+                      >
+                        {thinkingLanguages.map(lang => <option key={lang} value={lang}>{lang}</option>)}
+                      </select>
+                    </div>
+
+                    <div className="flex gap-2 mt-4">
+                      {['Male', 'Female'].map(g => (
+                        <label key={g} className="flex items-center gap-1 text-[11px] cursor-default">
+                          <input 
+                            type="radio" 
+                            name="gender" 
+                            checked={settings.gender === g}
+                            onChange={() => handleGenderChange(g as 'Male'|'Female')}
+                          />
+                          {g}
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'preferences' && (
+                  <>
+                    <fieldset className="xp-fieldset">
+                      <legend className="xp-legend text-[11px]">Conversation Settings</legend>
+                      
+                      <div className="flex flex-col gap-1 mb-2">
+                        <label className="text-[11px] text-black">Mode:</label>
+                        <select 
+                          value={settings.mode || 'Conversation'}
+                          onChange={e => saveSettings({...settings, mode: e.target.value})}
+                          className="border border-[#7f9db9] px-1 py-1 text-[11px] bg-white w-full"
+                        >
+                          {modes.map(m => <option key={m} value={m}>{m}</option>)}
+                        </select>
+                      </div>
+
+                      <div className="flex gap-4">
+                        <label className="flex items-center gap-1 text-[11px]">
+                          <input 
+                            type="checkbox" 
+                            checked={settings.grammarCorrection ?? true}
+                            onChange={e => saveSettings({...settings, grammarCorrection: e.target.checked})}
+                          />
+                          Grammar Correction
+                        </label>
+                        <label className="flex items-center gap-1 text-[11px]">
+                          <input 
+                            type="checkbox" 
+                            checked={settings.buzzerEnabled ?? false}
+                            onChange={e => saveSettings({...settings, buzzerEnabled: e.target.checked})}
+                          />
+                          Filler-Word Buzzer
+                        </label>
+                      </div>
+                    </fieldset>
+
+                    <fieldset className="xp-fieldset mt-2">
+                      <legend className="xp-legend text-[11px]">Pace & Length</legend>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] w-12">Pace:</span>
+                          <select value={settings.pace} onChange={e => saveSettings({...settings, pace: e.target.value})} className="border border-[#7f9db9] px-1 py-1 text-[11px] bg-white flex-1">
+                            {paces.map(p => <option key={p} value={p}>{p}</option>)}
+                          </select>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] w-12">Length:</span>
+                          <select value={settings.replyLength} onChange={e => saveSettings({...settings, replyLength: e.target.value as any})} className="border border-[#7f9db9] px-1 py-1 text-[11px] bg-white flex-1">
+                            {replyLengths.map(p => <option key={p} value={p}>{p}</option>)}
+                          </select>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </>
+                )}
+
+                {activeTab === 'chats' && (
+                  <div className="flex flex-col gap-2">
+                    {cachedChats.length === 0 && <span className="text-[11px]">No history found.</span>}
+                    {cachedChats.map((c, i) => (
+                      <div key={i} className="border border-[#dcdcdc] p-2 bg-[#f0f0f0]">
+                        <div className="font-bold text-[11px]">{c.title} <span className="font-normal text-gray-500">({c.date})</span></div>
+                        <div className="text-[10px] mt-1">{c.summary}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+              </div>
+
+              <div className="flex justify-end gap-2 mt-3 pt-3 border-t border-gray-400" style={{background: '#ece9d8'}}>
+                <button className="xp-button w-20" onClick={onClose}>OK</button>
+                <button className="xp-button w-20" onClick={onClose}>Cancel</button>
+                <button className="xp-button w-20" disabled>Apply</button>
+              </div>
+
             </div>
-          </motion.div>
-        </>
+          </div>
+        </motion.div>
       )}
     </AnimatePresence>
   );
