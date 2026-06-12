@@ -33,7 +33,7 @@ export default function App() {
   
   const [hasUpdate, setHasUpdate] = useState(false);
   const [apkUrl, setApkUrl] = useState("");
-  const currentVersionCode = 3;
+  const currentVersionCode = 4;
   
   const [lastSessionLogs, setLastSessionLogs] = useState<string[]>([]);
   const [report, setReport] = useState<string | null>(null);
